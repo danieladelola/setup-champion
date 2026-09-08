@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { publicApi } from "@/lib/admin-api";
 import { formatPrice, useCart } from "@/lib/cart";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Checkout — Mayor Beauty Place";
 const description = "Complete your Mayor Beauty Place order with secure delivery details.";
@@ -293,6 +294,7 @@ function CheckoutPage() {
           </aside>
         </div>
       </div>
+      <AdSlot placement="checkout" />
     </main>
   );
 }

@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
+import { AdSlot } from "@/components/ad-slot";
 import { Toaster } from "../components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
@@ -139,6 +140,7 @@ function RootComponent() {
           {!isAdmin && <SiteHeader />}
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
+          {!isAdmin && <AdSlot placement="sitewide_footer" />}
           {!isAdmin && <SiteFooter />}
           <Toaster />
         </WishlistProvider>

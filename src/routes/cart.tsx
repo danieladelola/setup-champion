@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Lock, Minus, Plus, RotateCcw, ShoppingBag, Trash2, Truck } from "lucide-react";
 
 import { formatPrice, useCart } from "@/lib/cart";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Your Cart — Mayor Beauty Place";
 const description = "Review the beauty products in your Mayor Beauty Place bag before checkout.";
@@ -197,6 +198,7 @@ function CartPage() {
           </div>
         )}
       </div>
+      <AdSlot placement="cart" />
     </main>
   );
 }

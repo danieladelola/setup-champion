@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { publicApi } from "@/lib/admin-api";
 import { formatPrice, unitPriceOf, useCart } from "@/lib/cart";
 import { useWishlist } from "@/lib/wishlist";
+import { AdSlot } from "@/components/ad-slot";
 
 export const Route = createFileRoute("/shop/$slug")({
   head: ({ params }) => {
@@ -325,6 +326,7 @@ function ProductPage() {
           </div>
         </div>
       </div>
+      <AdSlot placement="product_page" />
     </main>
   );
 }

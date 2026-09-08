@@ -6,6 +6,7 @@ import aboutFacial from "../assets/about/about-facial.jpg";
 import aboutMassage from "../assets/about/about-massage.jpg";
 import aboutManicure from "../assets/about/about-manicure.jpg";
 import aboutTeeth from "../assets/about/about-teeth.jpg";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "About Us — Mayor Beauty Place | Peckham Beauty Salon";
 const description =
@@ -210,6 +211,7 @@ function About() {
           </Link>
         </div>
       </section>
+      <AdSlot placement="about" />
     </main>
   );
 }
