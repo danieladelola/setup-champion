@@ -36,14 +36,17 @@ export const Route = createFileRoute("/api/booking-checkout-session")({
           getStripeSecretKey();
 
           const { booking, price, serviceName } = await createPendingBooking(parsed.data);
+          const reference = booking["booking_reference"] as string;
+
+          // Services without an online price are request-only: there is nothing
+          // to charge, so the booking stays pending until the salon confirms.
           if (!(price > 0)) {
             return json(
-              { error: "This service has no online price yet. Please contact the salon." },
-              { status: 400 },
+              { url: null, booking_reference: reference, requires_payment: false },
+              { status: 201 },
             );
           }
 
-          const reference = booking["booking_reference"] as string;
           const session = await createBookingCheckoutSession({
             bookingId: booking["id"] as string,
             reference,
@@ -58,7 +61,10 @@ export const Route = createFileRoute("/api/booking-checkout-session")({
           if (!session.url) {
             return json({ error: "Could not start the payment session" }, { status: 502 });
           }
-          return json({ url: session.url, booking_reference: reference }, { status: 201 });
+          return json(
+            { url: session.url, booking_reference: reference, requires_payment: true },
+            { status: 201 },
+          );
         } catch (err) {
           if (err instanceof BookingError) {
             return json({ error: err.message }, { status: err.status });

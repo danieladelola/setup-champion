@@ -386,7 +386,7 @@ export const bookingPublicApi = {
     preferred_time: string;
     notes?: string;
   }) =>
-    request<{ url: string; booking_reference: string }>("/api/booking-checkout-session", {
+    request<{ url: string | null; booking_reference: string; requires_payment: boolean }>("/api/booking-checkout-session", {
       method: "POST",
       body: JSON.stringify(body),
     }),

@@ -152,7 +152,9 @@ function Book() {
           preferred_time: data.time,
           notes: data.notes,
         });
-        window.location.href = res.url;
+        window.location.href = res.url
+          ? res.url
+          : `/booking-success/${res.booking_reference}`;
         return;
       } catch (err) {
         setError(err instanceof Error ? err.message : "Could not start the payment");
@@ -501,8 +503,9 @@ function Book() {
                 <div className="rounded-2xl border border-border bg-card p-6 text-sm">
                   <p className="font-medium">Pay securely with Stripe</p>
                   <p className="mt-2 text-muted-foreground">
-                    You'll be taken to Stripe's secure checkout to pay by card, Klarna or
-                    Clearpay. Your appointment is only confirmed once the payment succeeds.
+                    Paid treatments go to Stripe's secure checkout — card, Klarna or Clearpay —
+                    and are only confirmed once the payment succeeds. Treatments priced on
+                    request are sent to the team to confirm.
                   </p>
                 </div>
 
