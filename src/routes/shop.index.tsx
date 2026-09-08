@@ -118,7 +118,7 @@ function ProductCard({ product }: { product: Product }) {
                 },
                 1,
               );
-              toast.success(`${product.name} added to your bag`);
+              navigate({ to: "/checkout" });
             }}
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-semibold text-on-dark transition-colors hover:bg-brand-blue disabled:cursor-not-allowed disabled:opacity-50"
           >
