@@ -1,9 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Heart, ShoppingBag } from "lucide-react";
 
-import { useCart, formatPrice } from "../lib/cart";
-import { useWishlist } from "@/lib/wishlist";
 
 import logoAsset from "../assets/logo.png";
 
@@ -17,8 +14,6 @@ const links = [
 ] as const;
 
 export function SiteHeader() {
-  const cart = useCart();
-  const wishlist = useWishlist();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
 
@@ -64,34 +59,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-1 md:gap-2">
-          <Link
-            to="/wishlist"
-            aria-label={`Wishlist, ${wishlist.count} items`}
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:text-brand-blue"
-            activeProps={{ className: "text-brand-blue" }}
-          >
-            <Heart className="h-5 w-5" />
-            {wishlist.hydrated && wishlist.count > 0 && (
-              <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-red px-1 text-[10px] font-bold text-on-brand">
-                {wishlist.count}
-              </span>
-            )}
-          </Link>
-          <Link
-            to="/cart"
-            aria-label={`Cart, ${cart.count} items`}
-            className="inline-flex items-center gap-2 rounded-full px-3 py-2 transition-colors hover:text-brand-blue"
-          >
-            <span className="relative inline-flex h-5 w-5 items-center justify-center">
-              <ShoppingBag className="h-5 w-5" />
-              {cart.hydrated && cart.count > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-red px-1 text-[10px] font-bold text-on-brand">
-                  {cart.count}
-                </span>
-              )}
-            </span>
-            <span className="text-sm font-semibold">{formatPrice(cart.subtotal) ?? "£0.00"}</span>
-          </Link>
           <button
             type="button"
             aria-label="Toggle menu"

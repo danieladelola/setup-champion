@@ -251,7 +251,7 @@ function ProductPage() {
                 type="button"
                 disabled={!inStock}
                 onClick={() => {
-                  if (addToCart(quantity)) toast.success(`${product.name} added to your bag`);
+                  if (addToCart(quantity)) navigate({ to: "/checkout" });
                 }}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-ink px-8 py-4 text-xs font-semibold tracking-widest text-on-dark uppercase transition-colors hover:bg-brand-blue disabled:cursor-not-allowed disabled:opacity-50"
               >

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Heart, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/shop/")({
 
 function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
+  const navigate = useNavigate();
   const wishlist = useWishlist();
   const saved = wishlist.has(product.id);
   const price = formatPrice(product.price);
@@ -118,7 +119,7 @@ function ProductCard({ product }: { product: Product }) {
                 },
                 1,
               );
-              toast.success(`${product.name} added to your bag`);
+              navigate({ to: "/checkout" });
             }}
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-semibold text-on-dark transition-colors hover:bg-brand-blue disabled:cursor-not-allowed disabled:opacity-50"
           >
