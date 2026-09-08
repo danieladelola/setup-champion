@@ -5,6 +5,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import beforeAfterHero from "../assets/before-after-hero.png";
 
 import { publicApi } from "@/lib/admin-api";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Before & After — Mayor Beauty Place";
 const description =
@@ -133,6 +134,7 @@ function BeforeAfter() {
           )}
         </div>
       </section>
+      <AdSlot placement="gallery" />
 
       {/* CTA */}
       <section className="bg-brand-blue px-6 py-24 text-center text-on-brand md:px-12 md:py-32">

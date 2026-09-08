@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { publicApi, type Product } from "@/lib/admin-api";
 import { formatPrice, unitPriceOf, useCart } from "@/lib/cart";
 import { useWishlist } from "@/lib/wishlist";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Shop — Mayor Beauty Place";
 const description =
@@ -178,6 +179,7 @@ function Shop() {
           </p>
         </div>
       </section>
+      <AdSlot placement="shop_top" />
 
       <section className="px-6 py-24 md:px-12 md:py-32">
         <div className="mx-auto max-w-6xl">
@@ -208,6 +210,7 @@ function Shop() {
           )}
         </div>
       </section>
+      <AdSlot placement="shop_bottom" />
     </main>
   );
 }

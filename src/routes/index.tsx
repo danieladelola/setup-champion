@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { publicApi, type Product } from "../lib/admin-api";
 import { formatPrice, unitPriceOf, useCart } from "../lib/cart";
 import { useWishlist } from "../lib/wishlist";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Mayor Beauty Place — Beauty Empire in Peckham, London";
 const description =
@@ -273,6 +274,7 @@ function Index() {
           </div>
         </div>
       </section>
+      <AdSlot placement="home_after_hero" />
 
       {/* About */}
       <section className="bg-background px-6 py-16 md:px-12 md:py-20">
@@ -415,6 +417,7 @@ function Index() {
           </div>
         </div>
       </section>
+      <AdSlot placement="home_mid" />
 
       {/* Shop teaser */}
       <section className="bg-[#2645D8] px-6 py-16 text-on-dark md:px-12 md:py-20">
@@ -497,6 +500,7 @@ function Index() {
           </div>
         </div>
       </section>
+      <AdSlot placement="home_bottom" />
 
       <Testimonials />
     </main>

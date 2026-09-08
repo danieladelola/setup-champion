@@ -24,6 +24,7 @@ import {
 import { Calendar as DateCalendar } from "@/components/ui/calendar";
 import bookingHeroAsset from "@/assets/booking-hero-lashes.webp";
 import { bookingPublicApi } from "@/lib/admin-api";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Book A Service — Mayor Beauty Place";
 const description =
@@ -197,6 +198,7 @@ function Book() {
           </p>
         </div>
       </section>
+      <AdSlot placement="booking_top" />
 
       <section className="px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-5xl">
@@ -587,6 +589,7 @@ function Book() {
           </div>
         </div>
       </section>
+      <AdSlot placement="booking_bottom" />
     </main>
   );
 }

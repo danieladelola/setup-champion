@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { contactApi } from "@/lib/admin-api";
 
 import contactHeroAsset from "../assets/contact-hero.png";
+import { AdSlot } from "@/components/ad-slot";
 
 const title = "Contact Us — Mayor Beauty Place";
 const description =
@@ -199,6 +200,7 @@ function Contact() {
           </div>
         </div>
       </section>
+      <AdSlot placement="contact" />
     </main>
   );
 }
