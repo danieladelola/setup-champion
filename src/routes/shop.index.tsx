@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Heart, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/shop/")({
 
 function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
+  const navigate = useNavigate();
   const wishlist = useWishlist();
   const saved = wishlist.has(product.id);
   const price = formatPrice(product.price);
