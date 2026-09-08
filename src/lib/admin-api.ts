@@ -38,6 +38,18 @@ export type Transformation = {
   updated_at?: string;
 };
 
+export type Ad = {
+  id: string;
+  title: string;
+  image_url: string;
+  link_url: string | null;
+  placement: string;
+  sort_order: number;
+  active: boolean;
+  created_at?: string;
+  updated_at?: string;
+};
+
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
     credentials: "same-origin",
@@ -137,6 +149,17 @@ export const adminApi = {
     }),
   deleteTransformation: (id: string) =>
     request<{ ok: true }>(`/api/admin/transformations/${id}`, { method: "DELETE" }),
+  ads: () => request<{ ads: Ad[] }>("/api/admin/ads"),
+  createAd: (body: unknown) =>
+    request<{ ad: Ad }>("/api/admin/ads", { method: "POST", body: JSON.stringify(body) }),
+  updateAd: (id: string, body: unknown) =>
+    request<{ ad: Ad }>(`/api/admin/ads/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  setAdActive: (id: string, active: boolean) =>
+    request<{ ad: Ad }>(`/api/admin/ads/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ active }),
+    }),
+  deleteAd: (id: string) => request<{ ok: true }>(`/api/admin/ads/${id}`, { method: "DELETE" }),
   deleteProduct: (id: string) =>
     request<{ ok: true }>(`/api/admin/products/${id}`, { method: "DELETE" }),
   customers: () => request<{ customers: Customer[] }>("/api/admin/customers"),

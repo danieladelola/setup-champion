@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  Megaphone,
   Menu,
   Package,
   Settings,
@@ -26,6 +27,7 @@ const nav = [
   { to: "/admin/services", label: "Services", icon: Sparkles },
   { to: "/admin/customers", label: "Customers", icon: Users },
   { to: "/admin/gallery", label: "Gallery", icon: Images },
+  { to: "/admin/ads", label: "Ads", icon: Megaphone },
   { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
