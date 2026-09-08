@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { expireBooking, markBookingPaid } from "@/lib/bookings.server";
 import { expireStripeOrder, markOrderPaid } from "@/lib/orders.server";
 import { StripeConfigError, verifyStripeSignature } from "@/lib/stripe.server";
 
@@ -44,29 +45,49 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
 
         const session = event.data?.object;
         if (!session?.id) return new Response("ok");
+        const isBooking = session.metadata?.["kind"] === "booking";
+        const intent =
+          typeof session.payment_intent === "string" ? session.payment_intent : null;
 
         try {
           switch (event.type) {
-            // Card completes immediately; Klarna can settle asynchronously and
-            // arrives as async_payment_succeeded.
+            // Card completes immediately; Klarna and Clearpay can settle
+            // asynchronously and arrive as async_payment_succeeded.
             case "checkout.session.completed":
             case "checkout.session.async_payment_succeeded": {
-              if (event.type === "checkout.session.completed" && session.payment_status !== "paid") {
-                // Klarna pending — wait for the async success event.
+              if (
+                event.type === "checkout.session.completed" &&
+                session.payment_status !== "paid"
+              ) {
+                // Pay-later still pending — wait for the async success event.
                 break;
               }
-              await markOrderPaid({
-                sessionId: session.id,
-                paymentIntentId: session.payment_intent ?? null,
-                paymentMethod: session.payment_method_types?.[0] ?? null,
-                orderNumber:
-                  session.client_reference_id ?? session.metadata?.["order_number"] ?? null,
-              });
+              const paymentMethod = session.payment_method_types?.[0] ?? null;
+              if (isBooking) {
+                await markBookingPaid({
+                  sessionId: session.id,
+                  paymentIntentId: intent,
+                  paymentMethod,
+                  reference:
+                    session.client_reference_id ??
+                    session.metadata?.["booking_reference"] ??
+                    null,
+                });
+              } else {
+                await markOrderPaid({
+                  sessionId: session.id,
+                  paymentIntentId: intent,
+                  paymentMethod,
+                  orderNumber:
+                    session.client_reference_id ?? session.metadata?.["order_number"] ?? null,
+                });
+              }
               break;
             }
             case "checkout.session.expired":
             case "checkout.session.async_payment_failed": {
-              await expireStripeOrder(session.id);
+              if (isBooking) await expireBooking(session.id);
+              else await expireStripeOrder(session.id);
               break;
             }
             default:

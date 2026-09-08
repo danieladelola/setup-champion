@@ -28,13 +28,16 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as ApiBookingCheckoutSessionRouteImport } from './routes/api/booking-checkout-session'
 import { Route as ApiBookingsRouteImport } from './routes/api/bookings'
 import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout-session'
 import { Route as ApiMessagesRouteImport } from './routes/api/messages'
 import { Route as ApiOrdersRouteImport } from './routes/api/orders'
+import { Route as ApiPaymentStatusRouteImport } from './routes/api/payment-status'
 import { Route as ApiProductsRouteImport } from './routes/api/products'
 import { Route as ApiServicesRouteImport } from './routes/api/services'
 import { Route as ApiTransformationsRouteImport } from './routes/api/transformations'
+import { Route as BookingSuccessReferenceRouteImport } from './routes/booking-success.$reference'
 import { Route as OrderSuccessOrderNumberRouteImport } from './routes/order-success.$orderNumber'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as ShopSlugRouteImport } from './routes/shop.$slug'
@@ -51,6 +54,7 @@ import { Route as ApiAdminServicesRouteImport } from './routes/api/admin/service
 import { Route as ApiAdminStatsRouteImport } from './routes/api/admin/stats'
 import { Route as ApiAdminTransformationsRouteImport } from './routes/api/admin/transformations'
 import { Route as ApiAdminUploadRouteImport } from './routes/api/admin/upload'
+import { Route as ApiBookingsReferenceRouteImport } from './routes/api/bookings.$reference'
 import { Route as ApiMediaIdRouteImport } from './routes/api/media.$id'
 import { Route as ApiOrdersOrderNumberRouteImport } from './routes/api/orders.$orderNumber'
 import { Route as ApiProductsSlugRouteImport } from './routes/api/products.$slug'
@@ -160,6 +164,12 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/admin/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBookingCheckoutSessionRoute =
+  ApiBookingCheckoutSessionRouteImport.update({
+    id: '/api/booking-checkout-session',
+    path: '/api/booking-checkout-session',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiBookingsRoute = ApiBookingsRouteImport.update({
   id: '/api/bookings',
   path: '/api/bookings',
@@ -180,6 +190,11 @@ const ApiOrdersRoute = ApiOrdersRouteImport.update({
   path: '/api/orders',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPaymentStatusRoute = ApiPaymentStatusRouteImport.update({
+  id: '/api/payment-status',
+  path: '/api/payment-status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiProductsRoute = ApiProductsRouteImport.update({
   id: '/api/products',
   path: '/api/products',
@@ -193,6 +208,11 @@ const ApiServicesRoute = ApiServicesRouteImport.update({
 const ApiTransformationsRoute = ApiTransformationsRouteImport.update({
   id: '/api/transformations',
   path: '/api/transformations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingSuccessReferenceRoute = BookingSuccessReferenceRouteImport.update({
+  id: '/booking-success/$reference',
+  path: '/booking-success/$reference',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrderSuccessOrderNumberRoute = OrderSuccessOrderNumberRouteImport.update({
@@ -275,6 +295,11 @@ const ApiAdminUploadRoute = ApiAdminUploadRouteImport.update({
   id: '/api/admin/upload',
   path: '/api/admin/upload',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingsReferenceRoute = ApiBookingsReferenceRouteImport.update({
+  id: '/$reference',
+  path: '/$reference',
+  getParentRoute: () => ApiBookingsRoute,
 } as any)
 const ApiMediaIdRoute = ApiMediaIdRouteImport.update({
   id: '/api/media/$id',
@@ -363,13 +388,16 @@ export interface FileRoutesByFullPath {
   '/admin/products': typeof AdminProductsRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/api/bookings': typeof ApiBookingsRoute
+  '/api/booking-checkout-session': typeof ApiBookingCheckoutSessionRoute
+  '/api/bookings': typeof ApiBookingsRouteWithChildren
   '/api/checkout-session': typeof ApiCheckoutSessionRoute
   '/api/messages': typeof ApiMessagesRoute
   '/api/orders': typeof ApiOrdersRouteWithChildren
+  '/api/payment-status': typeof ApiPaymentStatusRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/api/services': typeof ApiServicesRoute
   '/api/transformations': typeof ApiTransformationsRoute
+  '/booking-success/$reference': typeof BookingSuccessReferenceRoute
   '/order-success/$orderNumber': typeof OrderSuccessOrderNumberRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -387,6 +415,7 @@ export interface FileRoutesByFullPath {
   '/api/admin/stats': typeof ApiAdminStatsRoute
   '/api/admin/transformations': typeof ApiAdminTransformationsRouteWithChildren
   '/api/admin/upload': typeof ApiAdminUploadRoute
+  '/api/bookings/$reference': typeof ApiBookingsReferenceRoute
   '/api/media/$id': typeof ApiMediaIdRoute
   '/api/orders/$orderNumber': typeof ApiOrdersOrderNumberRoute
   '/api/products/$slug': typeof ApiProductsSlugRoute
@@ -420,13 +449,16 @@ export interface FileRoutesByTo {
   '/admin/products': typeof AdminProductsRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/api/bookings': typeof ApiBookingsRoute
+  '/api/booking-checkout-session': typeof ApiBookingCheckoutSessionRoute
+  '/api/bookings': typeof ApiBookingsRouteWithChildren
   '/api/checkout-session': typeof ApiCheckoutSessionRoute
   '/api/messages': typeof ApiMessagesRoute
   '/api/orders': typeof ApiOrdersRouteWithChildren
+  '/api/payment-status': typeof ApiPaymentStatusRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/api/services': typeof ApiServicesRoute
   '/api/transformations': typeof ApiTransformationsRoute
+  '/booking-success/$reference': typeof BookingSuccessReferenceRoute
   '/order-success/$orderNumber': typeof OrderSuccessOrderNumberRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/admin': typeof AdminIndexRoute
@@ -444,6 +476,7 @@ export interface FileRoutesByTo {
   '/api/admin/stats': typeof ApiAdminStatsRoute
   '/api/admin/transformations': typeof ApiAdminTransformationsRouteWithChildren
   '/api/admin/upload': typeof ApiAdminUploadRoute
+  '/api/bookings/$reference': typeof ApiBookingsReferenceRoute
   '/api/media/$id': typeof ApiMediaIdRoute
   '/api/orders/$orderNumber': typeof ApiOrdersOrderNumberRoute
   '/api/products/$slug': typeof ApiProductsSlugRoute
@@ -478,13 +511,16 @@ export interface FileRoutesById {
   '/admin/products': typeof AdminProductsRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/api/bookings': typeof ApiBookingsRoute
+  '/api/booking-checkout-session': typeof ApiBookingCheckoutSessionRoute
+  '/api/bookings': typeof ApiBookingsRouteWithChildren
   '/api/checkout-session': typeof ApiCheckoutSessionRoute
   '/api/messages': typeof ApiMessagesRoute
   '/api/orders': typeof ApiOrdersRouteWithChildren
+  '/api/payment-status': typeof ApiPaymentStatusRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/api/services': typeof ApiServicesRoute
   '/api/transformations': typeof ApiTransformationsRoute
+  '/booking-success/$reference': typeof BookingSuccessReferenceRoute
   '/order-success/$orderNumber': typeof OrderSuccessOrderNumberRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -502,6 +538,7 @@ export interface FileRoutesById {
   '/api/admin/stats': typeof ApiAdminStatsRoute
   '/api/admin/transformations': typeof ApiAdminTransformationsRouteWithChildren
   '/api/admin/upload': typeof ApiAdminUploadRoute
+  '/api/bookings/$reference': typeof ApiBookingsReferenceRoute
   '/api/media/$id': typeof ApiMediaIdRoute
   '/api/orders/$orderNumber': typeof ApiOrdersOrderNumberRoute
   '/api/products/$slug': typeof ApiProductsSlugRoute
@@ -537,13 +574,16 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/admin/services'
     | '/admin/settings'
+    | '/api/booking-checkout-session'
     | '/api/bookings'
     | '/api/checkout-session'
     | '/api/messages'
     | '/api/orders'
+    | '/api/payment-status'
     | '/api/products'
     | '/api/services'
     | '/api/transformations'
+    | '/booking-success/$reference'
     | '/order-success/$orderNumber'
     | '/shop/$slug'
     | '/admin/'
@@ -561,6 +601,7 @@ export interface FileRouteTypes {
     | '/api/admin/stats'
     | '/api/admin/transformations'
     | '/api/admin/upload'
+    | '/api/bookings/$reference'
     | '/api/media/$id'
     | '/api/orders/$orderNumber'
     | '/api/products/$slug'
@@ -594,13 +635,16 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/admin/services'
     | '/admin/settings'
+    | '/api/booking-checkout-session'
     | '/api/bookings'
     | '/api/checkout-session'
     | '/api/messages'
     | '/api/orders'
+    | '/api/payment-status'
     | '/api/products'
     | '/api/services'
     | '/api/transformations'
+    | '/booking-success/$reference'
     | '/order-success/$orderNumber'
     | '/shop/$slug'
     | '/admin'
@@ -618,6 +662,7 @@ export interface FileRouteTypes {
     | '/api/admin/stats'
     | '/api/admin/transformations'
     | '/api/admin/upload'
+    | '/api/bookings/$reference'
     | '/api/media/$id'
     | '/api/orders/$orderNumber'
     | '/api/products/$slug'
@@ -651,13 +696,16 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/admin/services'
     | '/admin/settings'
+    | '/api/booking-checkout-session'
     | '/api/bookings'
     | '/api/checkout-session'
     | '/api/messages'
     | '/api/orders'
+    | '/api/payment-status'
     | '/api/products'
     | '/api/services'
     | '/api/transformations'
+    | '/booking-success/$reference'
     | '/order-success/$orderNumber'
     | '/shop/$slug'
     | '/admin/'
@@ -675,6 +723,7 @@ export interface FileRouteTypes {
     | '/api/admin/stats'
     | '/api/admin/transformations'
     | '/api/admin/upload'
+    | '/api/bookings/$reference'
     | '/api/media/$id'
     | '/api/orders/$orderNumber'
     | '/api/products/$slug'
@@ -709,13 +758,16 @@ export interface RootRouteChildren {
   AdminProductsRoute: typeof AdminProductsRoute
   AdminServicesRoute: typeof AdminServicesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
-  ApiBookingsRoute: typeof ApiBookingsRoute
+  ApiBookingCheckoutSessionRoute: typeof ApiBookingCheckoutSessionRoute
+  ApiBookingsRoute: typeof ApiBookingsRouteWithChildren
   ApiCheckoutSessionRoute: typeof ApiCheckoutSessionRoute
   ApiMessagesRoute: typeof ApiMessagesRoute
   ApiOrdersRoute: typeof ApiOrdersRouteWithChildren
+  ApiPaymentStatusRoute: typeof ApiPaymentStatusRoute
   ApiProductsRoute: typeof ApiProductsRouteWithChildren
   ApiServicesRoute: typeof ApiServicesRoute
   ApiTransformationsRoute: typeof ApiTransformationsRoute
+  BookingSuccessReferenceRoute: typeof BookingSuccessReferenceRoute
   OrderSuccessOrderNumberRoute: typeof OrderSuccessOrderNumberRoute
   ShopSlugRoute: typeof ShopSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -874,6 +926,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/booking-checkout-session': {
+      id: '/api/booking-checkout-session'
+      path: '/api/booking-checkout-session'
+      fullPath: '/api/booking-checkout-session'
+      preLoaderRoute: typeof ApiBookingCheckoutSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/bookings': {
       id: '/api/bookings'
       path: '/api/bookings'
@@ -902,6 +961,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/payment-status': {
+      id: '/api/payment-status'
+      path: '/api/payment-status'
+      fullPath: '/api/payment-status'
+      preLoaderRoute: typeof ApiPaymentStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/products': {
       id: '/api/products'
       path: '/api/products'
@@ -921,6 +987,13 @@ declare module '@tanstack/react-router' {
       path: '/api/transformations'
       fullPath: '/api/transformations'
       preLoaderRoute: typeof ApiTransformationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/booking-success/$reference': {
+      id: '/booking-success/$reference'
+      path: '/booking-success/$reference'
+      fullPath: '/booking-success/$reference'
+      preLoaderRoute: typeof BookingSuccessReferenceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/order-success/$orderNumber': {
@@ -1035,6 +1108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/bookings/$reference': {
+      id: '/api/bookings/$reference'
+      path: '/$reference'
+      fullPath: '/api/bookings/$reference'
+      preLoaderRoute: typeof ApiBookingsReferenceRouteImport
+      parentRoute: typeof ApiBookingsRoute
+    }
     '/api/media/$id': {
       id: '/api/media/$id'
       path: '/api/media/$id'
@@ -1128,6 +1208,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface ApiBookingsRouteChildren {
+  ApiBookingsReferenceRoute: typeof ApiBookingsReferenceRoute
+}
+
+const ApiBookingsRouteChildren: ApiBookingsRouteChildren = {
+  ApiBookingsReferenceRoute: ApiBookingsReferenceRoute,
+}
+
+const ApiBookingsRouteWithChildren = ApiBookingsRoute._addFileChildren(
+  ApiBookingsRouteChildren,
+)
 
 interface ApiOrdersRouteChildren {
   ApiOrdersOrderNumberRoute: typeof ApiOrdersOrderNumberRoute
@@ -1256,13 +1348,16 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProductsRoute: AdminProductsRoute,
   AdminServicesRoute: AdminServicesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
-  ApiBookingsRoute: ApiBookingsRoute,
+  ApiBookingCheckoutSessionRoute: ApiBookingCheckoutSessionRoute,
+  ApiBookingsRoute: ApiBookingsRouteWithChildren,
   ApiCheckoutSessionRoute: ApiCheckoutSessionRoute,
   ApiMessagesRoute: ApiMessagesRoute,
   ApiOrdersRoute: ApiOrdersRouteWithChildren,
+  ApiPaymentStatusRoute: ApiPaymentStatusRoute,
   ApiProductsRoute: ApiProductsRouteWithChildren,
   ApiServicesRoute: ApiServicesRoute,
   ApiTransformationsRoute: ApiTransformationsRoute,
+  BookingSuccessReferenceRoute: BookingSuccessReferenceRoute,
   OrderSuccessOrderNumberRoute: OrderSuccessOrderNumberRoute,
   ShopSlugRoute: ShopSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
