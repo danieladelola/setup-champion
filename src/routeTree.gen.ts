@@ -28,6 +28,7 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as ApiAdsRouteImport } from './routes/api/ads'
 import { Route as ApiBookingCheckoutSessionRouteImport } from './routes/api/booking-checkout-session'
 import { Route as ApiBookingsRouteImport } from './routes/api/bookings'
 import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout-session'
@@ -41,6 +42,7 @@ import { Route as BookingSuccessReferenceRouteImport } from './routes/booking-su
 import { Route as OrderSuccessOrderNumberRouteImport } from './routes/order-success.$orderNumber'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as ShopSlugRouteImport } from './routes/shop.$slug'
+import { Route as ApiAdminAdsRouteImport } from './routes/api/admin/ads'
 import { Route as ApiAdminBookingsRouteImport } from './routes/api/admin/bookings'
 import { Route as ApiAdminCustomersRouteImport } from './routes/api/admin/customers'
 import { Route as ApiAdminLoginRouteImport } from './routes/api/admin/login'
@@ -61,6 +63,7 @@ import { Route as ApiProductsSlugRouteImport } from './routes/api/products.$slug
 import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
 import { Route as ApiPublicLiveRouteImport } from './routes/api/public/live'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
+import { Route as ApiAdminAdsIdRouteImport } from './routes/api/admin/ads.$id'
 import { Route as ApiAdminBookingsIdRouteImport } from './routes/api/admin/bookings.$id'
 import { Route as ApiAdminMessagesIdRouteImport } from './routes/api/admin/messages.$id'
 import { Route as ApiAdminOrdersIdRouteImport } from './routes/api/admin/orders.$id'
@@ -164,6 +167,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/admin/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdsRoute = ApiAdsRouteImport.update({
+  id: '/api/ads',
+  path: '/api/ads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiBookingCheckoutSessionRoute =
   ApiBookingCheckoutSessionRouteImport.update({
     id: '/api/booking-checkout-session',
@@ -228,6 +236,11 @@ const ShopIndexRoute = ShopIndexRouteImport.update({
 const ShopSlugRoute = ShopSlugRouteImport.update({
   id: '/shop/$slug',
   path: '/shop/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminAdsRoute = ApiAdminAdsRouteImport.update({
+  id: '/api/admin/ads',
+  path: '/api/admin/ads',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAdminBookingsRoute = ApiAdminBookingsRouteImport.update({
@@ -331,6 +344,11 @@ const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
   path: '/api/public/stripe-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminAdsIdRoute = ApiAdminAdsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ApiAdminAdsRoute,
+} as any)
 const ApiAdminBookingsIdRoute = ApiAdminBookingsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -388,6 +406,7 @@ export interface FileRoutesByFullPath {
   '/admin/products': typeof AdminProductsRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/api/ads': typeof ApiAdsRoute
   '/api/booking-checkout-session': typeof ApiBookingCheckoutSessionRoute
   '/api/bookings': typeof ApiBookingsRouteWithChildren
   '/api/checkout-session': typeof ApiCheckoutSessionRoute
@@ -402,6 +421,7 @@ export interface FileRoutesByFullPath {
   '/shop/$slug': typeof ShopSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/shop/': typeof ShopIndexRoute
+  '/api/admin/ads': typeof ApiAdminAdsRouteWithChildren
   '/api/admin/bookings': typeof ApiAdminBookingsRouteWithChildren
   '/api/admin/customers': typeof ApiAdminCustomersRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
@@ -422,6 +442,7 @@ export interface FileRoutesByFullPath {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/live': typeof ApiPublicLiveRoute
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/api/admin/ads/$id': typeof ApiAdminAdsIdRoute
   '/api/admin/bookings/$id': typeof ApiAdminBookingsIdRoute
   '/api/admin/messages/$id': typeof ApiAdminMessagesIdRoute
   '/api/admin/orders/$id': typeof ApiAdminOrdersIdRoute
@@ -449,6 +470,7 @@ export interface FileRoutesByTo {
   '/admin/products': typeof AdminProductsRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/api/ads': typeof ApiAdsRoute
   '/api/booking-checkout-session': typeof ApiBookingCheckoutSessionRoute
   '/api/bookings': typeof ApiBookingsRouteWithChildren
   '/api/checkout-session': typeof ApiCheckoutSessionRoute
@@ -463,6 +485,7 @@ export interface FileRoutesByTo {
   '/shop/$slug': typeof ShopSlugRoute
   '/admin': typeof AdminIndexRoute
   '/shop': typeof ShopIndexRoute
+  '/api/admin/ads': typeof ApiAdminAdsRouteWithChildren
   '/api/admin/bookings': typeof ApiAdminBookingsRouteWithChildren
   '/api/admin/customers': typeof ApiAdminCustomersRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
@@ -483,6 +506,7 @@ export interface FileRoutesByTo {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/live': typeof ApiPublicLiveRoute
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/api/admin/ads/$id': typeof ApiAdminAdsIdRoute
   '/api/admin/bookings/$id': typeof ApiAdminBookingsIdRoute
   '/api/admin/messages/$id': typeof ApiAdminMessagesIdRoute
   '/api/admin/orders/$id': typeof ApiAdminOrdersIdRoute
@@ -511,6 +535,7 @@ export interface FileRoutesById {
   '/admin/products': typeof AdminProductsRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/api/ads': typeof ApiAdsRoute
   '/api/booking-checkout-session': typeof ApiBookingCheckoutSessionRoute
   '/api/bookings': typeof ApiBookingsRouteWithChildren
   '/api/checkout-session': typeof ApiCheckoutSessionRoute
@@ -525,6 +550,7 @@ export interface FileRoutesById {
   '/shop/$slug': typeof ShopSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/shop/': typeof ShopIndexRoute
+  '/api/admin/ads': typeof ApiAdminAdsRouteWithChildren
   '/api/admin/bookings': typeof ApiAdminBookingsRouteWithChildren
   '/api/admin/customers': typeof ApiAdminCustomersRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
@@ -545,6 +571,7 @@ export interface FileRoutesById {
   '/api/public/health': typeof ApiPublicHealthRoute
   '/api/public/live': typeof ApiPublicLiveRoute
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/api/admin/ads/$id': typeof ApiAdminAdsIdRoute
   '/api/admin/bookings/$id': typeof ApiAdminBookingsIdRoute
   '/api/admin/messages/$id': typeof ApiAdminMessagesIdRoute
   '/api/admin/orders/$id': typeof ApiAdminOrdersIdRoute
@@ -574,6 +601,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/admin/services'
     | '/admin/settings'
+    | '/api/ads'
     | '/api/booking-checkout-session'
     | '/api/bookings'
     | '/api/checkout-session'
@@ -588,6 +616,7 @@ export interface FileRouteTypes {
     | '/shop/$slug'
     | '/admin/'
     | '/shop/'
+    | '/api/admin/ads'
     | '/api/admin/bookings'
     | '/api/admin/customers'
     | '/api/admin/login'
@@ -608,6 +637,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/public/live'
     | '/api/public/stripe-webhook'
+    | '/api/admin/ads/$id'
     | '/api/admin/bookings/$id'
     | '/api/admin/messages/$id'
     | '/api/admin/orders/$id'
@@ -635,6 +665,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/admin/services'
     | '/admin/settings'
+    | '/api/ads'
     | '/api/booking-checkout-session'
     | '/api/bookings'
     | '/api/checkout-session'
@@ -649,6 +680,7 @@ export interface FileRouteTypes {
     | '/shop/$slug'
     | '/admin'
     | '/shop'
+    | '/api/admin/ads'
     | '/api/admin/bookings'
     | '/api/admin/customers'
     | '/api/admin/login'
@@ -669,6 +701,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/public/live'
     | '/api/public/stripe-webhook'
+    | '/api/admin/ads/$id'
     | '/api/admin/bookings/$id'
     | '/api/admin/messages/$id'
     | '/api/admin/orders/$id'
@@ -696,6 +729,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/admin/services'
     | '/admin/settings'
+    | '/api/ads'
     | '/api/booking-checkout-session'
     | '/api/bookings'
     | '/api/checkout-session'
@@ -710,6 +744,7 @@ export interface FileRouteTypes {
     | '/shop/$slug'
     | '/admin/'
     | '/shop/'
+    | '/api/admin/ads'
     | '/api/admin/bookings'
     | '/api/admin/customers'
     | '/api/admin/login'
@@ -730,6 +765,7 @@ export interface FileRouteTypes {
     | '/api/public/health'
     | '/api/public/live'
     | '/api/public/stripe-webhook'
+    | '/api/admin/ads/$id'
     | '/api/admin/bookings/$id'
     | '/api/admin/messages/$id'
     | '/api/admin/orders/$id'
@@ -758,6 +794,7 @@ export interface RootRouteChildren {
   AdminProductsRoute: typeof AdminProductsRoute
   AdminServicesRoute: typeof AdminServicesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  ApiAdsRoute: typeof ApiAdsRoute
   ApiBookingCheckoutSessionRoute: typeof ApiBookingCheckoutSessionRoute
   ApiBookingsRoute: typeof ApiBookingsRouteWithChildren
   ApiCheckoutSessionRoute: typeof ApiCheckoutSessionRoute
@@ -772,6 +809,7 @@ export interface RootRouteChildren {
   ShopSlugRoute: typeof ShopSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
   ShopIndexRoute: typeof ShopIndexRoute
+  ApiAdminAdsRoute: typeof ApiAdminAdsRouteWithChildren
   ApiAdminBookingsRoute: typeof ApiAdminBookingsRouteWithChildren
   ApiAdminCustomersRoute: typeof ApiAdminCustomersRoute
   ApiAdminLoginRoute: typeof ApiAdminLoginRoute
@@ -926,6 +964,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ads': {
+      id: '/api/ads'
+      path: '/api/ads'
+      fullPath: '/api/ads'
+      preLoaderRoute: typeof ApiAdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/booking-checkout-session': {
       id: '/api/booking-checkout-session'
       path: '/api/booking-checkout-session'
@@ -1015,6 +1060,13 @@ declare module '@tanstack/react-router' {
       path: '/shop/$slug'
       fullPath: '/shop/$slug'
       preLoaderRoute: typeof ShopSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/ads': {
+      id: '/api/admin/ads'
+      path: '/api/admin/ads'
+      fullPath: '/api/admin/ads'
+      preLoaderRoute: typeof ApiAdminAdsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/admin/bookings': {
@@ -1157,6 +1209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/ads/$id': {
+      id: '/api/admin/ads/$id'
+      path: '/$id'
+      fullPath: '/api/admin/ads/$id'
+      preLoaderRoute: typeof ApiAdminAdsIdRouteImport
+      parentRoute: typeof ApiAdminAdsRoute
+    }
     '/api/admin/bookings/$id': {
       id: '/api/admin/bookings/$id'
       path: '/$id'
@@ -1243,6 +1302,18 @@ const ApiProductsRouteChildren: ApiProductsRouteChildren = {
 
 const ApiProductsRouteWithChildren = ApiProductsRoute._addFileChildren(
   ApiProductsRouteChildren,
+)
+
+interface ApiAdminAdsRouteChildren {
+  ApiAdminAdsIdRoute: typeof ApiAdminAdsIdRoute
+}
+
+const ApiAdminAdsRouteChildren: ApiAdminAdsRouteChildren = {
+  ApiAdminAdsIdRoute: ApiAdminAdsIdRoute,
+}
+
+const ApiAdminAdsRouteWithChildren = ApiAdminAdsRoute._addFileChildren(
+  ApiAdminAdsRouteChildren,
 )
 
 interface ApiAdminBookingsRouteChildren {
@@ -1348,6 +1419,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProductsRoute: AdminProductsRoute,
   AdminServicesRoute: AdminServicesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  ApiAdsRoute: ApiAdsRoute,
   ApiBookingCheckoutSessionRoute: ApiBookingCheckoutSessionRoute,
   ApiBookingsRoute: ApiBookingsRouteWithChildren,
   ApiCheckoutSessionRoute: ApiCheckoutSessionRoute,
@@ -1362,6 +1434,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShopSlugRoute: ShopSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
   ShopIndexRoute: ShopIndexRoute,
+  ApiAdminAdsRoute: ApiAdminAdsRouteWithChildren,
   ApiAdminBookingsRoute: ApiAdminBookingsRouteWithChildren,
   ApiAdminCustomersRoute: ApiAdminCustomersRoute,
   ApiAdminLoginRoute: ApiAdminLoginRoute,
