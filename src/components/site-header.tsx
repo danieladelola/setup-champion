@@ -1,9 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Heart, ShoppingBag } from "lucide-react";
 
-import { useCart, formatPrice } from "../lib/cart";
-import { useWishlist } from "@/lib/wishlist";
 
 import logoAsset from "../assets/logo.png";
 
@@ -17,8 +14,6 @@ const links = [
 ] as const;
 
 export function SiteHeader() {
-  const cart = useCart();
-  const wishlist = useWishlist();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
 
