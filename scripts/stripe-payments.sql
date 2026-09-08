@@ -21,8 +21,9 @@ alter table bookings add column if not exists stripe_payment_intent_id text;
 alter table bookings add column if not exists paid_at timestamptz;
 alter table bookings add column if not exists updated_at timestamptz not null default now();
 
+-- Full (non-partial) unique index so ON CONFLICT (booking_reference) can use it.
 create unique index if not exists bookings_booking_reference_key
-  on bookings (booking_reference) where booking_reference is not null;
+  on bookings (booking_reference);
 create unique index if not exists bookings_stripe_session_id_key
   on bookings (stripe_session_id) where stripe_session_id is not null;
 create index if not exists bookings_stripe_payment_intent_idx
