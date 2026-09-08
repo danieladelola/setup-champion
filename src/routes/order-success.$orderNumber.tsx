@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Clock3 } from "lucide-react";
 
 import { publicApi } from "@/lib/admin-api";
 import { formatPrice } from "@/lib/cart";
@@ -21,16 +21,32 @@ export const Route = createFileRoute("/order-success/$orderNumber")({
       ],
     };
   },
+  validateSearch: (search: Record<string, unknown>) => ({
+    session_id: typeof search["session_id"] === "string" ? search["session_id"] : undefined,
+  }),
   component: OrderSuccess,
 });
 
 function OrderSuccess() {
   const { orderNumber } = Route.useParams();
+  const { session_id } = Route.useSearch();
+
+  // Ask Stripe directly before showing a confirmation; the webhook may lag.
+  const verify = useQuery({
+    queryKey: ["payment-status", session_id],
+    queryFn: () => publicApi.verifyPayment(session_id!),
+    enabled: !!session_id,
+    retry: 2,
+    refetchInterval: (q) => (q.state.data?.paid ? false : 3000),
+  });
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["order", orderNumber],
+    queryKey: ["order", orderNumber, verify.data?.paid ?? false],
     queryFn: () => publicApi.order(orderNumber),
     retry: false,
   });
+
+  const paid = data?.order.payment_status === "paid" || verify.data?.paid === true;
 
   return (
     <main className="px-6 pt-40 pb-24 md:px-12 md:pt-52">
@@ -53,9 +69,16 @@ function OrderSuccess() {
         ) : (
           <>
             <div className="flex items-center gap-3 text-brand-blue">
-              <CheckCircle2 className="h-8 w-8" />
-              <h1 className="font-display text-4xl text-foreground">Thank you for your order!</h1>
+              {paid ? <CheckCircle2 className="h-8 w-8" /> : <Clock3 className="h-8 w-8" />}
+              <h1 className="font-display text-4xl text-foreground">
+                {paid ? "Thank you for your order!" : "Payment is being confirmed…"}
+              </h1>
             </div>
+            <p className="mt-3 text-sm text-muted-foreground">
+              {paid
+                ? "We've received your payment and your order is confirmed."
+                : "Pay-later methods can take a moment to settle. This page updates automatically once Stripe confirms the payment."}
+            </p>
             <div className="mt-8 grid gap-4 rounded-3xl border border-border bg-card p-6 sm:grid-cols-2">
               <Detail label="Order Number" value={data.order.order_number} />
               <Detail

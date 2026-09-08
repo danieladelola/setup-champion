@@ -261,10 +261,15 @@ export const publicApi = {
       method: "POST",
       body: JSON.stringify(payload),
     }),
+  verifyPayment: (sessionId: string) =>
+    request<{ paid: boolean; kind: string; pending: boolean; payment_status: string }>(
+      `/api/payment-status?session_id=${encodeURIComponent(sessionId)}`,
+    ),
 
   order: (orderNumber: string) =>
     request<{ order: OrderDetail; items: OrderItem[] }>(`/api/orders/${orderNumber}`),
 };
+
 
 export type ServiceCategory = {
   id: string;
@@ -372,4 +377,37 @@ export const bookingPublicApi = {
       method: "POST",
       body: JSON.stringify(body),
     }),
+  startCheckout: (body: {
+    service_id: string;
+    full_name: string;
+    email: string;
+    phone: string;
+    preferred_date: string;
+    preferred_time: string;
+    notes?: string;
+  }) =>
+    request<{ url: string | null; booking_reference: string; requires_payment: boolean }>("/api/booking-checkout-session", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  byReference: (reference: string) =>
+    request<{ booking: PublicBooking }>(`/api/bookings/${reference}`),
+};
+
+export type PublicBooking = {
+  id: string;
+  booking_reference: string;
+  full_name: string | null;
+  email: string | null;
+  phone: string | null;
+  service: string | null;
+  category_name: string | null;
+  price: string;
+  duration_minutes: number;
+  preferred_date: string | null;
+  preferred_time: string | null;
+  notes: string | null;
+  status: string;
+  payment_status: string;
+  payment_method: string | null;
 };

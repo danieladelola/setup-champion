@@ -52,10 +52,6 @@ type BookingData = {
   email: string;
   phone: string;
   notes: string;
-  cardNumber: string;
-  cardExpiry: string;
-  cardCvc: string;
-  cardZip: string;
 };
 
 const initialData: BookingData = {
@@ -67,10 +63,6 @@ const initialData: BookingData = {
   email: "",
   phone: "",
   notes: "",
-  cardNumber: "",
-  cardExpiry: "",
-  cardCvc: "",
-  cardZip: "",
 };
 
 const steps = [
@@ -138,12 +130,7 @@ function Book() {
       case 3:
         return !!data.name && /^\S+@\S+\.\S+$/.test(data.email);
       case 4:
-        return (
-          data.cardNumber.replace(/\s/g, "").length >= 15 &&
-          data.cardExpiry.length === 5 &&
-          data.cardCvc.length >= 3 &&
-          data.cardZip.length >= 3
-        );
+        return !!data.serviceId && !!data.date && !!data.time;
       default:
         return true;
     }
@@ -154,7 +141,9 @@ function Book() {
       setProcessing(true);
       setError(null);
       try {
-        await bookingPublicApi.create({
+        // Nothing is confirmed here: the booking is stored as pending/unpaid and
+        // Stripe hosts the payment. Confirmation happens after Stripe verifies it.
+        const res = await bookingPublicApi.startCheckout({
           service_id: data.serviceId,
           full_name: data.name,
           email: data.email,
@@ -163,10 +152,12 @@ function Book() {
           preferred_time: data.time,
           notes: data.notes,
         });
-        setStep(5);
+        window.location.href = res.url
+          ? res.url
+          : `/booking-success/${res.booking_reference}`;
+        return;
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not confirm your booking");
-      } finally {
+        setError(err instanceof Error ? err.message : "Could not start the payment");
         setProcessing(false);
       }
       return;
@@ -175,17 +166,6 @@ function Book() {
   };
 
   const handleBack = () => setStep((s) => Math.max(s - 1, 1));
-
-  const formatCard = (value: string) => {
-    const digits = value.replace(/\D/g, "").slice(0, 19);
-    return digits.replace(/(\d{4})(?=\d)/g, "$1 ");
-  };
-
-  const formatExpiry = (value: string) => {
-    const digits = value.replace(/\D/g, "").slice(0, 4);
-    if (digits.length >= 3) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
-    return digits;
-  };
 
   const selectedDate = data.date ? new Date(`${data.date}T00:00:00`) : undefined;
   const today = new Date();
@@ -495,9 +475,8 @@ function Book() {
                   Secure <em className="italic text-brand-red">Checkout</em>
                 </h2>
                 <p className="mb-8 text-muted-foreground">
-                  Review your booking and enter your card details.
+                  Review your booking, then pay securely with Stripe.
                 </p>
-
                 <div className="mb-8 rounded-2xl border border-border bg-secondary/50 p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Category</span>
@@ -521,54 +500,13 @@ function Book() {
                   </div>
                 </div>
 
-                <div className="space-y-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="cardNumber">Card number</Label>
-                    <div className="relative">
-                      <CreditCard className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
-                        id="cardNumber"
-                        value={data.cardNumber}
-                        onChange={(e) => update("cardNumber", formatCard(e.target.value))}
-                        placeholder="4242 4242 4242 4242"
-                        className={`${inputClass} pl-11`}
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
-                    <div className="space-y-2">
-                      <Label htmlFor="expiry">Expiry</Label>
-                      <Input
-                        id="expiry"
-                        value={data.cardExpiry}
-                        onChange={(e) => update("cardExpiry", formatExpiry(e.target.value))}
-                        placeholder="MM/YY"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cvc">CVC</Label>
-                      <Input
-                        id="cvc"
-                        value={data.cardCvc}
-                        onChange={(e) =>
-                          update("cardCvc", e.target.value.replace(/\D/g, "").slice(0, 4))
-                        }
-                        placeholder="123"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div className="col-span-2 space-y-2 sm:col-span-1">
-                      <Label htmlFor="zip">Postcode / ZIP</Label>
-                      <Input
-                        id="zip"
-                        value={data.cardZip}
-                        onChange={(e) => update("cardZip", e.target.value)}
-                        placeholder="SW1A 1AA"
-                        className={inputClass}
-                      />
-                    </div>
-                  </div>
+                <div className="rounded-2xl border border-border bg-card p-6 text-sm">
+                  <p className="font-medium">Pay securely with Stripe</p>
+                  <p className="mt-2 text-muted-foreground">
+                    Paid treatments go to Stripe's secure checkout — card, Klarna or Clearpay —
+                    and are only confirmed once the payment succeeds. Treatments priced on
+                    request are sent to the team to confirm.
+                  </p>
                 </div>
 
                 {error && <p className="mt-6 text-sm text-brand-red">{error}</p>}
@@ -577,7 +515,7 @@ function Book() {
                   <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-brand-blue/10 text-brand-blue">
                     <Check className="h-2.5 w-2.5" />
                   </span>
-                  Your card details are encrypted and never stored on our servers.
+                  Card details are handled entirely by Stripe and never touch our servers.
                 </p>
               </div>
             )}
@@ -642,7 +580,7 @@ function Book() {
                   disabled={!canProceed() || processing}
                   className="rounded-full bg-brand-red px-10 py-5 text-sm font-semibold text-on-brand shadow-soft transition-colors hover:bg-brand-blue disabled:opacity-50"
                 >
-                  {processing ? "Processing…" : step === 4 ? "Pay & Confirm" : "Continue"}
+                  {processing ? "Redirecting…" : step === 4 ? "Pay securely" : "Continue"}
                 </Button>
               </div>
             )}
